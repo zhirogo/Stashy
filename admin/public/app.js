@@ -224,7 +224,7 @@ async function loadAll() {
 }
 
 async function refreshGitBadge() {
-  const s = await api.get('/api/status');
+  const s = await api.get('/api/health');
   const badge = $('git-badge');
   if (!s.ok) {
     badge.textContent = '非 git 仓库';
@@ -236,6 +236,8 @@ async function refreshGitBadge() {
     badge.textContent = `${s.branch} · 已同步`;
     badge.className = 'git-badge ok';
   }
+  // 数据未初始化时显示提示条
+  $('data-hint-bar').hidden = s.dataReady !== false;
 }
 
 /* ---------- 发布 ---------- */

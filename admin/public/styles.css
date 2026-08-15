@@ -57,6 +57,22 @@ body {
 .git-badge.ok { background: #3aa76d; }
 .git-badge.warn { background: var(--danger); }
 
+/* 数据初始化提示条 */
+.data-hint-bar {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  border-bottom: 1px solid var(--accent);
+  padding: 10px 24px;
+  font-size: 14px;
+  text-align: center;
+}
+.data-hint-bar code {
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: Consolas, "Courier New", monospace;
+}
+
 /* 布局 */
 .layout {
   display: grid;

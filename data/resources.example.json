@@ -2,13 +2,57 @@
   "resources": [
     {
       "id": "example-001",
-      "title": "Stashy 示例收藏",
+      "title": "Stashy 项目仓库",
       "url": "https://github.com/",
-      "description": "这是示例数据。复制本文件为 resources.json 后即可开始使用。",
+      "description": "这是示例数据。复制本文件为 data/resources.json 后即可开始使用。",
       "category": "工具",
       "tags": ["示例", "开始使用"],
       "created_at": "2026-01-01",
       "updated_at": "2026-01-01",
+      "notes": ""
+    },
+    {
+      "id": "example-002",
+      "title": "React 官方文档",
+      "url": "https://react.dev/",
+      "description": "React 框架官方文档，包含快速入门、API 参考与最佳实践。",
+      "category": "技术/前端",
+      "tags": ["react", "文档"],
+      "created_at": "2026-01-02",
+      "updated_at": "2026-01-02",
+      "notes": ""
+    },
+    {
+      "id": "example-003",
+      "title": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/zh-CN/",
+      "description": "Web 开发权威参考，覆盖 HTML/CSS/JavaScript 与浏览器 API。",
+      "category": "技术/前端",
+      "tags": ["javascript", "文档"],
+      "created_at": "2026-01-03",
+      "updated_at": "2026-01-03",
+      "notes": ""
+    },
+    {
+      "id": "example-004",
+      "title": "Figma",
+      "url": "https://www.figma.com/",
+      "description": "在线协作式 UI 设计与原型工具。",
+      "category": "设计",
+      "tags": ["ui", "原型"],
+      "created_at": "2026-01-04",
+      "updated_at": "2026-01-04",
+      "notes": ""
+    },
+    {
+      "id": "example-005",
+      "title": "阮一峰的网络日志",
+      "url": "https://www.ruanyifeng.com/blog/",
+      "description": "科技爱好者周刊与技术随笔，每周更新。",
+      "category": "阅读",
+      "tags": ["博客", "技术"],
+      "created_at": "2026-01-05",
+      "updated_at": "2026-01-05",
       "notes": ""
     }
   ]

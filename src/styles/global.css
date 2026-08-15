@@ -207,6 +207,24 @@ img {
   font-size: 13.5px;
 }
 
+.data-hint {
+  margin: 14px 0 0;
+  padding: 10px 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 13.5px;
+  max-width: 640px;
+}
+
+.data-hint code {
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: Consolas, "Courier New", monospace;
+}
+
 /* 筛选/排序栏 */
 .toolbar {
   display: flex;

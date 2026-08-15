@@ -6,6 +6,7 @@ import {
   aggregateTags,
   sortResources,
 } from '../lib/utils.js';
+import { isUsingExampleData } from '../lib/data.js';
 
 const resources = Astro.locals.resources || [];
 const catTree = buildCategoryTree(resources);
@@ -47,6 +48,13 @@ function buildQuery(updates) {
     <p class="page-desc">
       个人网址收藏站，集中整理与浏览技术、工具、阅读与生活的优质资源。
     </p>
+    {isUsingExampleData && (
+      <p class="data-hint">
+        ⚠️ 当前展示的是示例数据。请在本地执行
+        <code>cp data/resources.example.json data/resources.json</code>
+        后重新构建，即可展示你的真实收藏。
+      </p>
+    )}
     <div class="meta-stats">
       <span>{resources.length} 条收藏</span>
       <span>{tags.length} 个标签</span>
