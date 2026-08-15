@@ -5,6 +5,7 @@ import Base from '../layouts/Base.astro';
 // 由客户端 JS 读取 ?q= 并完成搜索渲染。
 const resources = Astro.locals.resources || [];
 const dataJson = JSON.stringify({ resources });
+const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <Base title="搜索">
@@ -22,8 +23,9 @@ const dataJson = JSON.stringify({ resources });
     </div>
   </section>
 
-  <script define:vars={{ dataJson }}>
+  <script define:vars={{ dataJson, baseUrl }}>
     window.__STASHY_DATA__ = JSON.parse(dataJson);
+    window.__STASHY_BASE__ = baseUrl;
   </script>
   <script>
     import { initSearch } from '../components/SearchClient';

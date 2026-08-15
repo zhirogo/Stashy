@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ResourceCard from '../../components/ResourceCard.astro';
-import { aggregateTags, sortResources, getAllResources } from '../../lib/utils.js';
+import { aggregateTags, sortResources, getAllResources, siteUrl } from '../../lib/utils.js';
 
 export function getStaticPaths() {
   const resources = getAllResources();
@@ -20,7 +20,7 @@ const allTags = aggregateTags(resources);
 <Base title={`标签：${tag}`}>
   <section class="container page-head">
     <nav class="breadcrumb">
-      <a href="/">首页</a>
+      <a href={siteUrl('/')}>首页</a>
       <span class="sep">/</span>
       <span>{tag}</span>
     </nav>
@@ -47,7 +47,7 @@ const allTags = aggregateTags(resources);
     <h2 class="sidebar-title">其他标签</h2>
     <div class="tag-cloud">
       {allTags.filter((t) => t.name !== tag).map((t) => (
-        <a href={`/tag/${t.name}`}>
+        <a href={siteUrl(`/tag/${t.name}`)}>
           {t.name} <span class="cnt">{t.count}</span>
         </a>
       ))}

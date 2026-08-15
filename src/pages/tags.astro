@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { aggregateTags } from '../lib/utils.js';
+import { aggregateTags, siteUrl } from '../lib/utils.js';
 
 const resources = Astro.locals.resources || [];
 const tags = aggregateTags(resources);
@@ -16,7 +16,7 @@ const tags = aggregateTags(resources);
     {tags.length > 0 ? (
       <div class="tag-cloud">
         {tags.map((t) => (
-          <a href={`/tag/${t.name}`}>
+          <a href={siteUrl(`/tag/${t.name}`)}>
             {t.name} <span class="cnt">{t.count}</span>
           </a>
         ))}

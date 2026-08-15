@@ -1,5 +1,14 @@
 export { getAllResources } from './data.js';
 
+/**
+ * 生成站内链接（自动加上部署子路径前缀）。
+ * 例如部署在 /stashy/ 下，url('/tags') 返回 /stashy/tags。
+ */
+export function siteUrl(path) {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  return base + path;
+}
+
 /** 从资源列表构建分类树（分类字符串以 / 分隔层级） */
 export function buildCategoryTree(resources) {
   const root = [];

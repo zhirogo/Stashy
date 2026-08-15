@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ResourceCard from '../../components/ResourceCard.astro';
-import { sortResources, flattenCategories, buildCategoryTree, getAllResources } from '../../lib/utils.js';
+import { sortResources, flattenCategories, buildCategoryTree, getAllResources, siteUrl } from '../../lib/utils.js';
 
 export function getStaticPaths() {
   const resources = getAllResources();
@@ -33,15 +33,14 @@ const sorted = sortResources(related);
 <Base title={category}>
   <section class="container page-head">
     <nav class="breadcrumb">
-      <a href="/">首页</a>
+      <a href={siteUrl('/')}>首页</a>
       <span class="sep">/</span>
       {segments.map((seg, i) => {
-        const path = segments.slice(0, i + 1).join('/');
         const isLast = i === segments.length - 1;
         return (
           <span>
             {!isLast ? (
-              <a href={`/category/${segments.slice(0, i + 1).join('/')}`}>{seg}</a>
+              <a href={siteUrl(`/category/${segments.slice(0, i + 1).join('/')}`)}>{seg}</a>
             ) : (
               <span>{seg}</span>
             )}
@@ -58,9 +57,9 @@ const sorted = sortResources(related);
     {children.length > 0 && (
       <div class="toolbar">
         <div class="filter-pills">
-          <a class="pill active" href={`/category/${segments.join('/')}`}>全部</a>
+          <a class="pill active" href={siteUrl(`/category/${segments.join('/')}`)}>全部</a>
           {children.map((child) => (
-            <a class="pill" href={`/category/${child.path}`}>
+            <a class="pill" href={siteUrl(`/category/${child.path}`)}>
               {child.name} <span style="opacity:.6">({child.count})</span>
             </a>
           ))}

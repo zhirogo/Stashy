@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import SearchIcon from '../components/SearchIcon.astro';
+import { siteUrl } from '../lib/utils.js';
 
 const { title = 'Stashy' } = Astro.props;
 const currentPath = Astro.url.pathname;
@@ -14,19 +15,19 @@ const total = (Astro.locals.resources || []).length;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Stashy - 个人网址收藏站" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={siteUrl('/favicon.svg')} />
     <title>{title} · Stashy</title>
   </head>
   <body>
     <header class="site-header">
       <div class="container header-inner">
-        <a class="brand" href="/">
+        <a class="brand" href={siteUrl('/')}>
           <span class="brand-name">Stash<em>y</em></span>
           <span class="brand-sub">个人收藏</span>
         </a>
         <nav class="nav">
-          <a href="/tags">标签</a>
-          <form class="search-box" action="/search" method="get">
+          <a href={siteUrl('/tags')}>标签</a>
+          <form class="search-box" action={siteUrl('/search')} method="get">
             <span class="icon"><SearchIcon /></span>
             <input type="search" name="q" placeholder="搜索收藏…" aria-label="搜索收藏" />
           </form>

@@ -14,7 +14,14 @@ interface SearchResource {
 declare global {
   interface Window {
     __STASHY_DATA__?: { resources: SearchResource[] };
+    __STASHY_BASE__?: string;
   }
+}
+
+/** 生成站内链接（带部署子路径前缀） */
+function siteUrl(path: string): string {
+  const base = (window.__STASHY_BASE__ || '').replace(/\/$/, '');
+  return base + path;
 }
 
 function esc(s: unknown): string {
@@ -86,7 +93,7 @@ export function initSearch(): void {
       return `
       <article class="card">
         <div class="card-top">
-          ${r.category ? `<a class="card-domain" href="/category/${esc(r.category)}" title="${esc(r.category)}"><span class="dot"></span>${esc(r.category)}</a>` : `<span class="card-domain"><span class="dot"></span>${esc(domain)}</span>`}
+          ${r.category ? `<a class="card-domain" href="${siteUrl(`/category/${esc(r.category)}`)}" title="${esc(r.category)}"><span class="dot"></span>${esc(r.category)}</a>` : `<span class="card-domain"><span class="dot"></span>${esc(domain)}</span>`}
         </div>
         <a class="card-title-link" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">
           <h3 class="card-title">${esc(r.title)}</h3>
@@ -94,7 +101,7 @@ export function initSearch(): void {
         ${r.description ? `<p class="card-desc">${esc(r.description)}</p>` : ''}
         <div class="card-meta">
           <div class="card-tags">
-            ${(r.tags || []).slice(0, 4).map((t) => `<a class="tag" href="/tag/${esc(t)}">${esc(t)}</a>`).join('')}
+            ${(r.tags || []).slice(0, 4).map((t) => `<a class="tag" href="${siteUrl(`/tag/${esc(t)}`)}">${esc(t)}</a>`).join('')}
           </div>
           <span class="card-date">${esc((r.created_at || '').slice(0, 10))}</span>
         </div>

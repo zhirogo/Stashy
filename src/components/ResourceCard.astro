@@ -1,5 +1,5 @@
 ---
-import { getDomain } from '../lib/utils.js';
+import { getDomain, siteUrl } from '../lib/utils.js';
 
 const { resource, showCategory = false } = Astro.props;
 const domain = getDomain(resource.url);
@@ -11,7 +11,7 @@ const dateLabel = (resource.created_at || '').slice(0, 10);
     {showCategory && resource.category ? (
       <a
         class="card-domain"
-        href={`/category/${resource.category}`}
+        href={siteUrl(`/category/${resource.category}`)}
         title={resource.category}
       >
         <span class="dot"></span>
@@ -33,7 +33,7 @@ const dateLabel = (resource.created_at || '').slice(0, 10);
   <div class="card-meta">
     <div class="card-tags">
       {(resource.tags || []).slice(0, 4).map((t) => (
-        <a class="tag" href={`/tag/${t}`}>{t}</a>
+        <a class="tag" href={siteUrl(`/tag/${t}`)}>{t}</a>
       ))}
     </div>
     <span class="card-date">{dateLabel}</span>
