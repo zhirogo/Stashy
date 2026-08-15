@@ -16,7 +16,7 @@ const tags = aggregateTags(resources);
     {tags.length > 0 ? (
       <div class="tag-cloud">
         {tags.map((t) => (
-          <a href={`/tag/${encodeURIComponent(t.name)}`}>
+          <a href={`/tag/${t.name}`}>
             {t.name} <span class="cnt">{t.count}</span>
           </a>
         ))}

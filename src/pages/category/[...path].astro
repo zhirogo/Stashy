@@ -7,13 +7,12 @@ export function getStaticPaths() {
   const resources = getAllResources();
   const catTree = buildCategoryTree(resources);
   const flat = flattenCategories(catTree);
-  return flat.map((n) => ({
-    params: { path: n.path.split('/').map(encodeURIComponent).join('/') },
-  }));
+  // path 使用原始分类字符串（如 技术/前端），Astro 会按 / 拆分为多个 rest 段
+  return flat.map((n) => ({ params: { path: n.path } }));
 }
 
 const resources = Astro.locals.resources || [];
-const segments = (Astro.params.path || '').split('/').map(decodeURIComponent);
+const segments = (Astro.params.path || '').split('/');
 const category = segments.join('/');
 
 // 匹配该分类及其子分类
@@ -42,7 +41,7 @@ const sorted = sortResources(related);
         return (
           <span>
             {!isLast ? (
-              <a href={`/category/${segments.slice(0, i + 1).map(encodeURIComponent).join('/')}`}>{seg}</a>
+              <a href={`/category/${segments.slice(0, i + 1).join('/')}`}>{seg}</a>
             ) : (
               <span>{seg}</span>
             )}
@@ -59,9 +58,9 @@ const sorted = sortResources(related);
     {children.length > 0 && (
       <div class="toolbar">
         <div class="filter-pills">
-          <a class="pill active" href={`/category/${segments.map(encodeURIComponent).join('/')}`}>全部</a>
+          <a class="pill active" href={`/category/${segments.join('/')}`}>全部</a>
           {children.map((child) => (
-            <a class="pill" href={`/category/${child.path.split('/').map(encodeURIComponent).join('/')}`}>
+            <a class="pill" href={`/category/${child.path}`}>
               {child.name} <span style="opacity:.6">({child.count})</span>
             </a>
           ))}

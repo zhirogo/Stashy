@@ -6,11 +6,12 @@ import { aggregateTags, sortResources, getAllResources } from '../../lib/utils.j
 export function getStaticPaths() {
   const resources = getAllResources();
   const allTags = aggregateTags(resources);
-  return allTags.map((t) => ({ params: { tag: encodeURIComponent(t.name) } }));
+  // tag 使用原始名称，避免中文被编码后与路由匹配不一致
+  return allTags.map((t) => ({ params: { tag: t.name } }));
 }
 
 const resources = Astro.locals.resources || [];
-const tag = decodeURIComponent(Astro.params.tag || '');
+const tag = Astro.params.tag || '';
 const related = resources.filter((r) => (r.tags || []).includes(tag));
 const sorted = sortResources(related);
 const allTags = aggregateTags(resources);
@@ -46,7 +47,7 @@ const allTags = aggregateTags(resources);
     <h2 class="sidebar-title">其他标签</h2>
     <div class="tag-cloud">
       {allTags.filter((t) => t.name !== tag).map((t) => (
-        <a href={`/tag/${encodeURIComponent(t.name)}`}>
+        <a href={`/tag/${t.name}`}>
           {t.name} <span class="cnt">{t.count}</span>
         </a>
       ))}

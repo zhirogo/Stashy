@@ -77,7 +77,7 @@ function buildQuery(updates) {
               <li>
                 <a
                   class={activeCategory === node.path ? 'cat-link active' : 'cat-link'}
-                  href={`/category/${node.path.split('/').map(encodeURIComponent).join('/')}`}
+                  href={`/category/${node.path}`}
                 >
                   <span>{node.name}</span><span class="cnt">{node.count}</span>
                 </a>
@@ -87,7 +87,7 @@ function buildQuery(updates) {
                       <li>
                         <a
                           class={activeCategory === child.path ? 'cat-link active' : 'cat-link'}
-                          href={`/category/${child.path.split('/').map(encodeURIComponent).join('/')}`}
+                          href={`/category/${child.path}`}
                         >
                           <span>{child.name}</span><span class="cnt">{child.count}</span>
                         </a>

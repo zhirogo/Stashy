@@ -203,11 +203,15 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(38, 35, 28, 0.5);
-  display: flex;
+  display: none; /* 默认隐藏；hidden 属性由 :not([hidden]) 控制显示 */
   align-items: center;
   justify-content: center;
   z-index: 50;
   padding: 20px;
+}
+
+.modal:not([hidden]) {
+  display: flex;
 }
 .modal-card {
   background: var(--bg-elev);
