@@ -1,0 +1,49 @@
+---
+import Fuse from 'fuse.js';
+import Base from '../layouts/Base.astro';
+import ResourceCard from '../components/ResourceCard.astro';
+
+const resources = Astro.locals.resources || [];
+const q = Astro.url.searchParams.get('q') || '';
+
+let results = [];
+if (q.trim()) {
+  const fuse = new Fuse(resources, {
+    keys: ['title', 'description', 'tags'],
+    threshold: 0.4,
+    ignoreLocation: true,
+  });
+  results = fuse.search(q.trim()).map((r) => r.item);
+}
+---
+
+<Base title={q ? `搜索：${q}` : '搜索'}>
+  <section class="container page-head">
+    <h1 class="page-title">
+      搜索<span class="dim">{q ? `：“${q}”` : ''}</span>
+    </h1>
+    <p class="page-desc">
+      {q ? <>共找到 <strong>{results.length}</strong> 条相关收藏</> : '输入关键字，搜索收藏的标题、描述与标签。'}
+    </p>
+  </section>
+
+  <section class="container">
+    {q.trim() ? (
+      results.length > 0 ? (
+        <div class="resource-grid">
+          {results.map((r) => <ResourceCard resource={r} showCategory />)}
+        </div>
+      ) : (
+        <div class="empty">
+          <div class="big">🔍</div>
+          <p>没有找到与“{q}”相关的收藏。</p>
+        </div>
+      )
+    ) : (
+      <div class="empty">
+        <div class="big">🔍</div>
+        <p>在上方输入关键字开始搜索。</p>
+      </div>
+    )}
+  </section>
+</Base>

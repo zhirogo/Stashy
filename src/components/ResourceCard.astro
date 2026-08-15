@@ -1,0 +1,41 @@
+---
+import { getDomain } from '../lib/utils.js';
+
+const { resource, showCategory = false } = Astro.props;
+const domain = getDomain(resource.url);
+const dateLabel = (resource.created_at || '').slice(0, 10);
+---
+
+<article class="card">
+  <div class="card-top">
+    {showCategory && resource.category ? (
+      <a
+        class="card-domain"
+        href={`/category/${resource.category.split('/').map(encodeURIComponent).join('/')}`}
+        title={resource.category}
+      >
+        <span class="dot"></span>
+        {resource.category}
+      </a>
+    ) : (
+      <span class="card-domain">
+        <span class="dot"></span>
+        {domain}
+      </span>
+    )}
+  </div>
+
+  <a class="card-title-link" href={resource.url} target="_blank" rel="noopener noreferrer">
+    <h3 class="card-title">{resource.title}</h3>
+  </a>
+  {resource.description && <p class="card-desc">{resource.description}</p>}
+
+  <div class="card-meta">
+    <div class="card-tags">
+      {(resource.tags || []).slice(0, 4).map((t) => (
+        <a class="tag" href={`/tag/${encodeURIComponent(t)}`}>{t}</a>
+      ))}
+    </div>
+    <span class="card-date">{dateLabel}</span>
+  </div>
+</article>

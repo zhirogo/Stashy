@@ -1,0 +1,52 @@
+---
+import '../styles/global.css';
+import SearchIcon from '../components/SearchIcon.astro';
+
+const { title = 'Stashy' } = Astro.props;
+const currentPath = Astro.url.pathname;
+const total = (Astro.locals.resources || []).length;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Stashy - 个人网址收藏站" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} · Stashy</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/">
+          <span class="brand-name">Stash<em>y</em></span>
+          <span class="brand-sub">个人收藏</span>
+        </a>
+        <nav class="nav">
+          <a href="/tags">标签</a>
+          <form class="search-box" action="/search/" method="get">
+            <span class="icon"><SearchIcon /></span>
+            <input type="search" name="q" placeholder="搜索收藏…" aria-label="搜索收藏" />
+          </form>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span>共 {total} 条收藏</span>
+        <span>
+          © {new Date().getFullYear()} Stashy · 由
+          <a href="https://astro.build/" target="_blank" rel="noopener">Astro</a>
+          构建
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>

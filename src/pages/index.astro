@@ -1,0 +1,129 @@
+---
+import Base from '../layouts/Base.astro';
+import ResourceCard from '../components/ResourceCard.astro';
+import {
+  buildCategoryTree,
+  aggregateTags,
+  sortResources,
+} from '../lib/utils.js';
+
+const resources = Astro.locals.resources || [];
+const catTree = buildCategoryTree(resources);
+const tags = aggregateTags(resources);
+
+// URL 查询参数：分类筛选、标签筛选、排序
+const q = Astro.url.searchParams;
+const activeCategory = q.get('category') || '';
+const activeTag = q.get('tag') || '';
+const sort = q.get('sort') || 'latest';
+
+let filtered = [...resources];
+if (activeCategory) {
+  filtered = filtered.filter((r) => r.category === activeCategory || (r.category || '').startsWith(activeCategory + '/'));
+}
+if (activeTag) {
+  filtered = filtered.filter((r) => (r.tags || []).includes(activeTag));
+}
+filtered = sortResources(filtered, sort);
+
+function buildQuery(updates) {
+  const params = new URLSearchParams(q);
+  for (const [k, v] of updates) {
+    if (v) params.set(k, v);
+    else params.delete(k);
+  }
+  const s = params.toString();
+  return s ? `?${s}` : '/';
+}
+---
+
+<Base>
+  <section class="container page-head">
+    <h1 class="page-title">
+      {activeCategory ? <span>分类 · <span class="dim">{activeCategory}</span></span>
+        : activeTag ? <span>标签 · <span class="dim">{activeTag}</span></span>
+        : <span>我的收藏</span>}
+    </h1>
+    <p class="page-desc">
+      个人网址收藏站，集中整理与浏览技术、工具、阅读与生活的优质资源。
+    </p>
+    <div class="meta-stats">
+      <span>{resources.length} 条收藏</span>
+      <span>{tags.length} 个标签</span>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="home-layout">
+      <!-- 分类侧栏 -->
+      <aside class="sidebar">
+        <h2 class="sidebar-title">分类</h2>
+        <ul class="cat-list">
+          <li>
+            <a class={activeCategory ? 'cat-link' : 'cat-link active'} href="/">
+              <span>全部收藏</span><span class="cnt">{resources.length}</span>
+            </a>
+          </li>
+          {
+            catTree.map((node) => (
+              <li>
+                <a
+                  class={activeCategory === node.path ? 'cat-link active' : 'cat-link'}
+                  href={`/category/${node.path.split('/').map(encodeURIComponent).join('/')}`}
+                >
+                  <span>{node.name}</span><span class="cnt">{node.count}</span>
+                </a>
+                {node.children.length > 0 && (
+                  <ul class="cat-children">
+                    {node.children.map((child) => (
+                      <li>
+                        <a
+                          class={activeCategory === child.path ? 'cat-link active' : 'cat-link'}
+                          href={`/category/${child.path.split('/').map(encodeURIComponent).join('/')}`}
+                        >
+                          <span>{child.name}</span><span class="cnt">{child.count}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </aside>
+
+      <!-- 资源列表 -->
+      <div>
+        <div class="toolbar">
+          <div class="filter-pills">
+            <a class={!activeTag ? 'pill active' : 'pill'} href={buildQuery([['tag', '']])}>全部</a>
+            {tags.map((t) => (
+              <a
+                class={activeTag === t.name ? 'pill active' : 'pill'}
+                href={buildQuery([['tag', t.name]])}
+              >
+                {t.name}
+              </a>
+            ))}
+          </div>
+          <select class="sort-select" onchange="const u=new URL(location.href);u.searchParams.set('sort',this.value);location.href=u.toString();">
+            <option value="latest" selected={sort === 'latest'}>最新收藏</option>
+            <option value="title" selected={sort === 'title'}>标题排序</option>
+          </select>
+        </div>
+
+        {filtered.length > 0 ? (
+          <div class="resource-grid">
+            {filtered.map((r) => <ResourceCard resource={r} showCategory />)}
+          </div>
+        ) : (
+          <div class="empty">
+            <div class="big">🗂️</div>
+            <p>该筛选条件下暂无收藏。</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,83 @@
+---
+import Base from '../../layouts/Base.astro';
+import ResourceCard from '../../components/ResourceCard.astro';
+import { sortResources, flattenCategories, buildCategoryTree, getAllResources } from '../../lib/utils.js';
+
+export function getStaticPaths() {
+  const resources = getAllResources();
+  const catTree = buildCategoryTree(resources);
+  const flat = flattenCategories(catTree);
+  return flat.map((n) => ({
+    params: { path: n.path.split('/').map(encodeURIComponent).join('/') },
+  }));
+}
+
+const resources = Astro.locals.resources || [];
+const segments = (Astro.params.path || '').split('/').map(decodeURIComponent);
+const category = segments.join('/');
+
+// 匹配该分类及其子分类
+const related = resources.filter((r) => {
+  const c = r.category || '';
+  return c === category || c.startsWith(category + '/');
+});
+
+// 子分类
+const catTree = buildCategoryTree(resources);
+const flatCats = flattenCategories(catTree);
+const currentNode = flatCats.find((n) => n.path === category);
+const children = currentNode ? currentNode.children : [];
+
+const sorted = sortResources(related);
+---
+
+<Base title={category}>
+  <section class="container page-head">
+    <nav class="breadcrumb">
+      <a href="/">首页</a>
+      <span class="sep">/</span>
+      {segments.map((seg, i) => {
+        const path = segments.slice(0, i + 1).join('/');
+        const isLast = i === segments.length - 1;
+        return (
+          <span>
+            {!isLast ? (
+              <a href={`/category/${segments.slice(0, i + 1).map(encodeURIComponent).join('/')}`}>{seg}</a>
+            ) : (
+              <span>{seg}</span>
+            )}
+            {!isLast && <span class="sep"> / </span>}
+          </span>
+        );
+      })}
+    </nav>
+    <h1 class="page-title">{category}</h1>
+    <p class="page-desc">分类下共 {related.length} 条收藏{children.length ? `，含 ${children.length} 个子分类` : ''}。</p>
+  </section>
+
+  <section class="container">
+    {children.length > 0 && (
+      <div class="toolbar">
+        <div class="filter-pills">
+          <a class="pill active" href={`/category/${segments.map(encodeURIComponent).join('/')}`}>全部</a>
+          {children.map((child) => (
+            <a class="pill" href={`/category/${child.path.split('/').map(encodeURIComponent).join('/')}`}>
+              {child.name} <span style="opacity:.6">({child.count})</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {sorted.length > 0 ? (
+      <div class="resource-grid">
+        {sorted.map((r) => <ResourceCard resource={r} showCategory />)}
+      </div>
+    ) : (
+      <div class="empty">
+        <div class="big">🗂️</div>
+        <p>该分类下暂无收藏。</p>
+      </div>
+    )}
+  </section>
+</Base>

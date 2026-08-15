@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import ResourceCard from '../../components/ResourceCard.astro';
+import { aggregateTags, sortResources, getAllResources } from '../../lib/utils.js';
+
+export function getStaticPaths() {
+  const resources = getAllResources();
+  const allTags = aggregateTags(resources);
+  return allTags.map((t) => ({ params: { tag: encodeURIComponent(t.name) } }));
+}
+
+const resources = Astro.locals.resources || [];
+const tag = decodeURIComponent(Astro.params.tag || '');
+const related = resources.filter((r) => (r.tags || []).includes(tag));
+const sorted = sortResources(related);
+const allTags = aggregateTags(resources);
+---
+
+<Base title={`标签：${tag}`}>
+  <section class="container page-head">
+    <nav class="breadcrumb">
+      <a href="/">首页</a>
+      <span class="sep">/</span>
+      <span>{tag}</span>
+    </nav>
+    <h1 class="page-title">
+      标签 · <span class="dim">{tag}</span>
+    </h1>
+    <p class="page-desc">该标签下共 {sorted.length} 条收藏。</p>
+  </section>
+
+  <section class="container">
+    {sorted.length > 0 ? (
+      <div class="resource-grid">
+        {sorted.map((r) => <ResourceCard resource={r} showCategory />)}
+      </div>
+    ) : (
+      <div class="empty">
+        <div class="big">🏷️</div>
+        <p>该标签下暂无收藏。</p>
+      </div>
+    )}
+  </section>
+
+  <section class="container" style="margin-top:48px">
+    <h2 class="sidebar-title">其他标签</h2>
+    <div class="tag-cloud">
+      {allTags.filter((t) => t.name !== tag).map((t) => (
+        <a href={`/tag/${encodeURIComponent(t.name)}`}>
+          {t.name} <span class="cnt">{t.count}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
