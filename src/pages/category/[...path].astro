@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ResourceCard from '../../components/ResourceCard.astro';
+import Sidebar from '../../components/Sidebar.astro';
 import { sortResources, flattenCategories, buildCategoryTree, getAllResources, siteUrl } from '../../lib/utils.js';
 
 export function getStaticPaths() {
@@ -54,28 +55,36 @@ const sorted = sortResources(related);
   </section>
 
   <section class="container">
-    {children.length > 0 && (
-      <div class="toolbar">
-        <div class="filter-pills">
-          <a class="pill active" href={siteUrl(`/category/${segments.join('/')}`)}>全部</a>
-          {children.map((child) => (
-            <a class="pill" href={siteUrl(`/category/${child.path}`)}>
-              {child.name} <span style="opacity:.6">({child.count})</span>
-            </a>
-          ))}
-        </div>
-      </div>
-    )}
+    <div class="home-layout">
+      <!-- 固定侧栏 -->
+      <Sidebar resources={resources} activeCategory={category} />
 
-    {sorted.length > 0 ? (
-      <div class="resource-grid">
-        {sorted.map((r) => <ResourceCard resource={r} showCategory />)}
+      <!-- 分类内容 -->
+      <div>
+        {children.length > 0 && (
+          <div class="toolbar">
+            <div class="filter-pills">
+              <a class="pill active" href={siteUrl(`/category/${segments.join('/')}`)}>全部</a>
+              {children.map((child) => (
+                <a class="pill" href={siteUrl(`/category/${child.path}`)}>
+                  {child.name} <span style="opacity:.6">({child.count})</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {sorted.length > 0 ? (
+          <div class="resource-grid">
+            {sorted.map((r) => <ResourceCard resource={r} showCategory />)}
+          </div>
+        ) : (
+          <div class="empty">
+            <div class="big">🗂️</div>
+            <p>该分类下暂无收藏。</p>
+          </div>
+        )}
       </div>
-    ) : (
-      <div class="empty">
-        <div class="big">🗂️</div>
-        <p>该分类下暂无收藏。</p>
-      </div>
-    )}
+    </div>
   </section>
 </Base>

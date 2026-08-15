@@ -1,8 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import ResourceCard from '../components/ResourceCard.astro';
+import Sidebar from '../components/Sidebar.astro';
 import {
-  buildCategoryTree,
   aggregateTags,
   sortResources,
   siteUrl,
@@ -10,7 +10,6 @@ import {
 import { isUsingExampleData } from '../lib/data.js';
 
 const resources = Astro.locals.resources || [];
-const catTree = buildCategoryTree(resources);
 const tags = aggregateTags(resources);
 
 // URL 查询参数：分类筛选、标签筛选、排序
@@ -65,42 +64,7 @@ function buildQuery(updates) {
   <section class="container">
     <div class="home-layout">
       <!-- 分类侧栏 -->
-      <aside class="sidebar">
-        <h2 class="sidebar-title">分类</h2>
-        <ul class="cat-list">
-          <li>
-            <a class={activeCategory ? 'cat-link' : 'cat-link active'} href={siteUrl('/')}>
-              <span>全部收藏</span><span class="cnt">{resources.length}</span>
-            </a>
-          </li>
-          {
-            catTree.map((node) => (
-              <li>
-                <a
-                  class={activeCategory === node.path ? 'cat-link active' : 'cat-link'}
-                  href={siteUrl(`/category/${node.path}`)}
-                >
-                  <span>{node.name}</span><span class="cnt">{node.count}</span>
-                </a>
-                {node.children.length > 0 && (
-                  <ul class="cat-children">
-                    {node.children.map((child) => (
-                      <li>
-                        <a
-                          class={activeCategory === child.path ? 'cat-link active' : 'cat-link'}
-                          href={siteUrl(`/category/${child.path}`)}
-                        >
-                          <span>{child.name}</span><span class="cnt">{child.count}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))
-          }
-        </ul>
-      </aside>
+      <Sidebar resources={resources} activeCategory={activeCategory} />
 
       <!-- 资源列表 -->
       <div>
