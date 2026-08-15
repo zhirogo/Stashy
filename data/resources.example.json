@@ -1,0 +1,15 @@
+{
+  "resources": [
+    {
+      "id": "example-001",
+      "title": "Stashy 示例收藏",
+      "url": "https://github.com/",
+      "description": "这是示例数据。复制本文件为 resources.json 后即可开始使用。",
+      "category": "工具",
+      "tags": ["示例", "开始使用"],
+      "created_at": "2026-01-01",
+      "updated_at": "2026-01-01",
+      "notes": ""
+    }
+  ]
+}

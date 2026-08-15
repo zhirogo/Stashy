@@ -1,0 +1,21 @@
+# 依赖
+node_modules/
+
+# 构建产物
+dist/
+.astro/
+
+# 日志
+*.log
+npm-debug.log*
+
+# 个人数据（不入库，用 resources.example.json 作为模板）
+data/resources.json
+data/export.json
+
+# 本地文档（不入库）
+DEPLOY-LOCAL.md
+
+# 系统文件
+.DS_Store
+Thumbs.db
