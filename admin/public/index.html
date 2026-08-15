@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stashy 管理后台</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="logo">Stash<em>y</em> 管理</span>
+      <div class="topbar-right">
+        <span id="git-badge" class="git-badge">检测中…</span>
+        <button id="btn-export" class="btn btn-ghost" title="导出数据">导出</button>
+        <button id="btn-publish" class="btn btn-accent" title="提交并推送更改">发布</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- 侧栏导航 -->
+    <aside class="sidebar">
+      <nav class="sidenav">
+        <a href="#resources" data-view="resources" class="nav-item active">收藏</a>
+        <a href="#categories" data-view="categories" class="nav-item">分类</a>
+        <a href="#tags" data-view="tags" class="nav-item">标签</a>
+      </nav>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="content">
+      <!-- 收藏视图 -->
+      <section id="view-resources" class="view active">
+        <div class="view-head">
+          <h1>收藏管理</h1>
+          <button id="btn-add" class="btn btn-accent">+ 新增收藏</button>
+        </div>
+
+        <div class="filters">
+          <input id="search-input" type="search" placeholder="搜索标题、描述、标签…" />
+          <select id="filter-category"><option value="">全部分类</option></select>
+          <select id="filter-tag"><option value="">全部标签</option></select>
+          <button id="btn-clear-filter" class="btn btn-ghost">清除筛选</button>
+        </div>
+
+        <div class="toolbar-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="check-all" /> 全选
+          </label>
+          <button id="btn-batch-delete" class="btn btn-danger" disabled>批量删除</button>
+          <span id="result-count" class="result-count"></span>
+        </div>
+
+        <div id="resource-list" class="resource-list"></div>
+      </section>
+
+      <!-- 分类视图 -->
+      <section id="view-categories" class="view">
+        <div class="view-head">
+          <h1>分类管理</h1>
+        </div>
+        <div id="category-list" class="category-list"></div>
+      </section>
+
+      <!-- 标签视图 -->
+      <section id="view-tags" class="view">
+        <div class="view-head">
+          <h1>标签管理</h1>
+        </div>
+        <div id="tag-list" class="tag-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 新增/编辑弹窗 -->
+  <div id="modal" class="modal" hidden>
+    <div class="modal-card">
+      <h2 id="modal-title">新增收藏</h2>
+      <form id="resource-form">
+        <input type="hidden" id="f-id" />
+        <label>标题 *<input id="f-title" required placeholder="例如：React 官方文档" /></label>
+        <label>链接 *<input id="f-url" type="url" required placeholder="https://…" /></label>
+        <label>描述<textarea id="f-description" rows="2" placeholder="一句话介绍这个资源"></textarea></label>
+        <label>分类<select id="f-category"></select></label>
+        <label>备注<textarea id="f-notes" rows="2" placeholder="个人备注（不对外展示）"></textarea></label>
+        <label>标签<select id="f-tags" multiple placeholder="可多选，Ctrl/⌘ 多选"></select></label>
+        <div class="modal-actions">
+          <button type="button" id="modal-cancel" class="btn btn-ghost">取消</button>
+          <button type="submit" class="btn btn-accent">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 发布确认弹窗 -->
+  <div id="publish-modal" class="modal" hidden>
+    <div class="modal-card">
+      <h2>发布到远程</h2>
+      <label>提交说明<input id="publish-message" placeholder="chore(data): 更新收藏" /></label>
+      <p id="publish-hint" class="hint"></p>
+      <div class="modal-actions">
+        <button type="button" id="publish-cancel" class="btn btn-ghost">取消</button>
+        <button type="button" id="publish-confirm" class="btn btn-accent">确认发布</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分类/标签操作弹窗 -->
+  <div id="simple-modal" class="modal" hidden>
+    <div class="modal-card">
+      <h2 id="simple-modal-title">操作</h2>
+      <label id="simple-modal-field"></label>
+      <div class="modal-actions">
+        <button type="button" id="simple-cancel" class="btn btn-ghost">取消</button>
+        <button type="button" id="simple-confirm" class="btn btn-accent">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>
