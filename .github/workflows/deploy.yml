@@ -33,10 +33,6 @@ jobs:
       - name: 安装依赖
         run: npm ci
 
-      - name: 准备数据文件
-        # 个人数据 data/resources.json 不进入仓库，这里用示例数据生成
-        run: cp data/resources.example.json data/resources.json
-
       - name: 构建展示站
         run: npm run build
         env:

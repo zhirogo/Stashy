@@ -24,7 +24,7 @@ stashy/
 │   └── styles/             # 全局样式
 ├── public/                 # 静态资源
 ├── data/
-│   └── resources.example.json  # 示例数据模板（复制为 resources.json 使用）
+│   └── resources.json      # 收藏数据（随仓库提交，部署时直接使用）
 ├── admin/                  # 本地管理应用（Node.js + Express）
 ├── .github/workflows/      # GitHub Pages 自动部署
 └── package.json
@@ -49,8 +49,6 @@ git clone https://github.com/<你的用户名>/stashy.git
 cd stashy
 npm install
 
-# 2. 初始化数据文件（首次）
-cp data/resources.example.json data/resources.json
 ```
 
 ### 启动本地管理应用
@@ -71,7 +69,7 @@ npm run dev
 
 ## 收藏数据
 
-所有收藏存储于 `data/resources.json`（个人数据，不进入仓库）。字段说明：
+所有收藏存储于 `data/resources.json`（随仓库提交，部署后公网可见）。字段说明：
 
 ```json
 {

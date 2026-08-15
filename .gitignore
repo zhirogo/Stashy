@@ -9,8 +9,7 @@ dist/
 *.log
 npm-debug.log*
 
-# 个人数据（不入库，用 resources.example.json 作为模板）
-data/resources.json
+# 数据导出备份（入库的 resources.json 除外）
 data/export.json
 
 # 本地文档（不入库）
