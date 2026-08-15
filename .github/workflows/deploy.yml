@@ -27,7 +27,7 @@ jobs:
       - name: 配置 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: 安装依赖
@@ -40,9 +40,8 @@ jobs:
       - name: 构建展示站
         run: npm run build
         env:
-          # 部署到用户站点(https://user.github.io/)时使用根路径，
-          # 若部署到项目站点(https://user.github.io/stashy/)，改为 BASE_PATH=/stashy/
-          BASE_PATH: /
+          # 站点部署在项目页 https://user.github.io/stashy/，需使用子路径
+          BASE_PATH: /stashy/
 
       - name: 配置 Pages
         uses: actions/configure-pages@v5
