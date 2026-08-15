@@ -1,3 +1,26 @@
 {
-  "resources": []
+  "resources": [
+    {
+      "id": "rmsug04fo5t6it",
+      "title": "秀才的进阶之路",
+      "url": "https://golangstar.cn/",
+      "description": "go的相关的资源",
+      "category": "",
+      "tags": [],
+      "notes": "",
+      "created_at": "2026-08-15",
+      "updated_at": "2026-08-15"
+    },
+    {
+      "id": "rmsug3ga4kzfdw",
+      "title": "小林coding",
+      "url": "https://xiaolincoding.com/",
+      "description": "",
+      "category": "",
+      "tags": [],
+      "notes": "",
+      "created_at": "2026-08-15",
+      "updated_at": "2026-08-15"
+    }
+  ]
 }
