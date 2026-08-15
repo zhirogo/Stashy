@@ -1,49 +1,32 @@
 ---
-import Fuse from 'fuse.js';
 import Base from '../layouts/Base.astro';
-import ResourceCard from '../components/ResourceCard.astro';
 
+// 服务端无法读取查询参数（SSG 模式），因此将全部资源数据内嵌到页面，
+// 由客户端 JS 读取 ?q= 并完成搜索渲染。
 const resources = Astro.locals.resources || [];
-const q = Astro.url.searchParams.get('q') || '';
-
-let results = [];
-if (q.trim()) {
-  const fuse = new Fuse(resources, {
-    keys: ['title', 'description', 'tags'],
-    threshold: 0.4,
-    ignoreLocation: true,
-  });
-  results = fuse.search(q.trim()).map((r) => r.item);
-}
+const dataJson = JSON.stringify({ resources });
 ---
 
-<Base title={q ? `搜索：${q}` : '搜索'}>
+<Base title="搜索">
   <section class="container page-head">
-    <h1 class="page-title">
-      搜索<span class="dim">{q ? `：“${q}”` : ''}</span>
-    </h1>
-    <p class="page-desc">
-      {q ? <>共找到 <strong>{results.length}</strong> 条相关收藏</> : '输入关键字，搜索收藏的标题、描述与标签。'}
-    </p>
+    <h1 class="page-title" id="search-result-title">搜索</h1>
+    <p class="page-desc" id="search-result-desc">输入关键字，搜索收藏的标题、描述与标签。</p>
   </section>
 
   <section class="container">
-    {q.trim() ? (
-      results.length > 0 ? (
-        <div class="resource-grid">
-          {results.map((r) => <ResourceCard resource={r} showCategory />)}
-        </div>
-      ) : (
-        <div class="empty">
-          <div class="big">🔍</div>
-          <p>没有找到与“{q}”相关的收藏。</p>
-        </div>
-      )
-    ) : (
+    <div id="search-results">
       <div class="empty">
         <div class="big">🔍</div>
-        <p>在上方输入关键字开始搜索。</p>
+        <p>正在搜索…</p>
       </div>
-    )}
+    </div>
   </section>
+
+  <script define:vars={{ dataJson }}>
+    window.__STASHY_DATA__ = JSON.parse(dataJson);
+  </script>
+  <script>
+    import { initSearch } from '../components/SearchClient';
+    initSearch();
+  </script>
 </Base>

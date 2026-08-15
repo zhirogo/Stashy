@@ -7,5 +7,6 @@ const base = process.env.BASE_PATH || '/';
 export default defineConfig({
   site: 'https://stashy.example.com',
   base,
-  trailingSlash: 'never',
+  // ignore：带不带尾部斜杠都能访问，避免 404 困扰
+  trailingSlash: 'ignore',
 });
