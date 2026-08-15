@@ -40,8 +40,9 @@ jobs:
       - name: 构建展示站
         run: npm run build
         env:
-          # 站点部署在项目页 https://user.github.io/stashy/，需使用子路径
-          BASE_PATH: /stashy/
+          # 站点部署在项目页，BASE_PATH 必须与仓库名大小写一致
+          # （仓库名 Stashy → /Stashy/，仓库名 stashy → /stashy/）
+          BASE_PATH: /Stashy/
 
       - name: 配置 Pages
         uses: actions/configure-pages@v5

@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
-// 部署到 GitHub Pages 子路径（如 https://user.github.io/stashy/）时，
-// 构建前设置环境变量 BASE_PATH=/stashy/ 即可，默认按根路径部署。
+// 部署到 GitHub Pages 项目页时，构建前设置环境变量 BASE_PATH，
+// 且大小写必须与仓库名完全一致（仓库名 Stashy → /Stashy/）。
 const base = process.env.BASE_PATH || '/';
 
 export default defineConfig({
